@@ -3,7 +3,6 @@ var FieldType;
     FieldType["inputField"] = "inputField";
 })(FieldType || (FieldType = {}));
 ;
-const $ = document.createElement;
 class App {
     constructor(target) {
         this.target = document.querySelector(target);
@@ -22,6 +21,12 @@ class Form {
                 value: 'Jan',
                 type: 'text'
             }),
+            new InputField({
+                name: 'surname',
+                label: 'Nazwisko',
+                value: 'Nowak',
+                type: 'text',
+            }),
             new SelectField({
                 name: 'kierunekStudiow',
                 label: 'Kierunek studiów',
@@ -31,6 +36,12 @@ class Form {
                     'Informatyka',
                     'Geologia'
                 ]
+            }),
+            new TextareaField({
+                name: 'comments',
+                label: 'Uwagi',
+                value: 'Wpisz swoją uwagę',
+                type: 'textarea'
             })
         ];
     }
@@ -66,6 +77,20 @@ class InputField extends Field {
         const element = document.createElement("input");
         const { value, name, type, label } = this.config;
         element.type = type;
+        element.name = name;
+        element.id = name;
+        element.value = value;
+        return this.fieldInstance.render(element, label);
+    }
+}
+class TextareaField extends Field {
+    constructor(config) {
+        super();
+        this.config = config;
+    }
+    render() {
+        const element = document.createElement("textarea");
+        const { value, name, type, label } = this.config;
         element.name = name;
         element.id = name;
         element.value = value;
