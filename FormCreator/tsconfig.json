@@ -1,14 +1,11 @@
 {
     "compilerOptions": {
-        "outDir": "./dist/",
+        "outDir": "./dist",
         "sourceMap": true,
         // "strictNullChecks": true,
         "noImplicitAny": true,
-        // "module": "es2015",
+        "module": "es6",
         "target": "es6",
         "removeComments": true,
-    },
-    "include": [
-        "src/**/*"
-    ],
+    }
 }

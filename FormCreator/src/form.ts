@@ -1,5 +1,10 @@
 import { Field } from "./fields/field";
-import { FieldTypes, CommonFieldTypes } from "./interfaces";
+import { FieldTypes } from "./interfaces";
+import { locStorage } from "./locStorage";
+
+export interface Data {
+    [key: string]: string | boolean;
+}
 
 class InputField extends Field {
     public config: Partial<FieldTypes['inputField']>
@@ -162,8 +167,7 @@ export class Form {
     }
 
     render(node: HTMLElement) {
-        // jesli tak zrobisz, musisz wykonac najpierw event.preventDefault();
-        // node.innerHTML = '<form onSubmit=">'; // utworzyć elemnt form w podobny sposób co tworzony jest tutaj submitButton lub jeszcze bardziej podobnie co FieldLabel
+   
         node.innerHTML = '';
         this.fields.forEach(instance => node.appendChild(instance.render()));
 
@@ -173,10 +177,6 @@ export class Form {
         submitButton.onclick = () => pasteInBox(this.getValue());
         node.appendChild(submitButton);
     }
-}
-
-interface Data {
-    [key: string]: string | boolean;
 }
 
 function valueToString(value: any) {
@@ -195,6 +195,8 @@ function pasteInBox(data: Data) {
         body.innerHTML += `<div class="box"></div>`;
         box = document.querySelector(".box");
     }
+
+    locStorage.saveDocument(data);
 
     box.innerHTML = Object.keys(data).map(key => {
         const value = data[key];
