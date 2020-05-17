@@ -30,6 +30,10 @@ class LocStorage implements Storage {
     getDocuments(): string[] {
         return this.loadDocument(DOCUMENTS_LIST_ID) || []; 
     }
+    
+    removeDocument(id: string){
+
+    }
 }
 
 export const locStorage = new LocStorage();
