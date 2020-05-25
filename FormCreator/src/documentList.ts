@@ -1,22 +1,27 @@
 import { locStorage } from "./locStorage";
-import { Data } from "./form";
+import { Data } from "./interfaces/data";
 
 export class DocumentList {
-    private documents: Data[] = [];
+    private documents: Record<string, Data> = {};
 
     constructor() {
         this.getDocumentList();
     }
 
     getDocumentList() {
-        this.documents = locStorage
+        this.documents = {};
+        
+        locStorage
             .getDocuments()
-            .map(key => locStorage.loadDocument(key));
+            .forEach(key => {
+                const document = this.getDocument(key)
+
+                this.documents[key] = document;
+            });
     }
 
     // Imię, Nazwisko, Kierunek, Uwagi, e-Learning
     createRow(data: Data) {
-        // const temp = Object.keys(data).map(key => `<td>${data[key]}</td>`);
         return `
         <td>${data.firstName}</td>
         <td>${data.surname}</td>
@@ -24,7 +29,14 @@ export class DocumentList {
         <td>${data.comments}</td>
         <td>${data.preferences}</td>
         `;
-        // return temp.join('');
+    }
+
+    getDocument(id: string) {
+        return locStorage.loadDocument(id);
+    }
+
+    removeDocument(id: string) {
+        locStorage.removeDocument(id);
     }
 
     render(node: HTMLElement) {
@@ -33,12 +45,23 @@ export class DocumentList {
         const table = document.createElement('table');
         table.innerHTML = '<tr><th>Imię</th><td>Nazwisko</td><td>Kierunek</td><td>Uwagi</td><td>e-learning</td></tr>';
 
-        // tr - table row
-        // th - table head
-        // td - table element | 1 | 2 | 3 |
-        this.documents.forEach(data => {
+        Object.keys(this.documents).forEach(key => {
+            const data = this.documents[key];
+
             const tr = document.createElement('tr');
+            tr.onclick = () => window.location.href = `edit-document.html?id=${key}`
             tr.innerHTML = this.createRow(data);
+
+            const removeActionTd = document.createElement('td');
+            removeActionTd.innerHTML = '<button>Usuń</button>';
+            removeActionTd.onclick = (e) => {
+                e.stopPropagation();
+                this.removeDocument(key);
+                window.location.reload();
+            }
+
+            tr.appendChild(removeActionTd);
+
             table.appendChild(tr);
         });
         

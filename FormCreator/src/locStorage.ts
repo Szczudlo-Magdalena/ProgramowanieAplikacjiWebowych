@@ -1,24 +1,24 @@
-import { Storage } from "./interfaces";
+import { Storage } from "./interfaces/interfaces";
 
 declare global {
     interface Window {
         locStorage: LocStorage;
-        adasdasd: boolean;
     }
 }
 
 const DOCUMENTS_LIST_ID = 'documents';
 
-// spread i rest 
-
 class LocStorage implements Storage {
-    saveDocument(obj: any): string {
-        const id = `document-${Date.now()}`;
+    saveDocument(obj: any, key?: string): string {
+        const id = key || `document-${Date.now()}`;
 
         localStorage.setItem(id, JSON.stringify(obj));
 
         const documents = this.getDocuments() || [];
-        localStorage.setItem(DOCUMENTS_LIST_ID, JSON.stringify([...documents, id]))
+        if (!key) {
+            documents.push(id);
+        }
+        localStorage.setItem(DOCUMENTS_LIST_ID, JSON.stringify(documents))
 
         return id;
     }
@@ -30,9 +30,12 @@ class LocStorage implements Storage {
     getDocuments(): string[] {
         return this.loadDocument(DOCUMENTS_LIST_ID) || []; 
     }
-    
-    removeDocument(id: string){
 
+    removeDocument(key: string) {
+        const documents = this.getDocuments().filter(id => id !== key);
+        localStorage.removeItem(key);
+
+        localStorage.setItem(DOCUMENTS_LIST_ID, JSON.stringify(documents))
     }
 }
 

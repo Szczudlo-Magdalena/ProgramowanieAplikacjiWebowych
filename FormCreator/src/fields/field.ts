@@ -13,4 +13,6 @@ export abstract class Field {
     }
 
     abstract getValue(): any;
+
+    abstract render(): HTMLElement;
 }

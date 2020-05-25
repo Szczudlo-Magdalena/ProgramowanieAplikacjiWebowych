@@ -1,9 +1,9 @@
 import { Field } from "./field";
 import { FieldTypes } from "../interfaces/interfaces";
 
-export class InputField extends Field {
+export class TextareaField extends Field {
     public config: Partial<FieldTypes['inputField']>
-    private element: HTMLInputElement;
+    private element: HTMLTextAreaElement;
 
     constructor(config: Partial<FieldTypes['inputField']>) {
         super();
@@ -15,10 +15,10 @@ export class InputField extends Field {
     }
 
     render() {
-        const element = document.createElement("input");
+        const element = document.createElement("textarea");
         this.element = element;
         const { value, name, type, label } = this.config;
-        element.type = type;
+        //element.type = type;
         element.name = name;
         element.id = name;
         element.value = value;
