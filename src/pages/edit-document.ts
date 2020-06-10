@@ -13,7 +13,7 @@ export class EditDocumentPage {
 
         const id = Router.getParam('id');
         const data = this.documentList.getDocument(id);
-
+        
         this.form = new Form(id, data);
     }
 

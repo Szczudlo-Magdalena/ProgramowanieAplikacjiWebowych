@@ -6,6 +6,7 @@ const pages = [
     'edit-document',
     'new-document',
     'document-list',
+    'new-form',
 ];
 
 module.exports = {

@@ -22,4 +22,9 @@ export interface Storage {
     saveDocument(obj: any): string;
     loadDocument(id: string): any;
     getDocuments(): string[];
+    removeDocument(id: string): void;
+    saveForm(obj: any): string;
+    loadForm(id: string): any;
+    getForms(): string[];
+    removeForm(id: string): void;
 }

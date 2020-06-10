@@ -24,8 +24,8 @@ export class Form {
             new InputField({
                 name: 'surname',
                 label:'Nazwisko',
-                value:data.surname || '',
-                type:'text',
+                value: data.surname || '',
+                type: 'text',
     
             }),
             new SelectField({
@@ -41,7 +41,7 @@ export class Form {
             new TextareaField({
                 name: 'comments',
                 label: 'Uwagi',
-                value:data.comments || 'Wpisz swoją uwagę...',
+                value: data.comments || 'Wpisz swoją uwagę...',
                 type: 'textarea'
             }),
             new CheckboxField({

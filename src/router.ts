@@ -1,6 +1,7 @@
 import { DocumentListPage } from "./pages/document-list";
 import { EditDocumentPage } from "./pages/edit-document";
 import { NewDocumentPage } from "./pages/new-document";
+import { NewFormPage } from "./pages/new-form";
 
 export class Router {
     static getParam(key: string) {
@@ -18,6 +19,8 @@ export class Router {
             page = new DocumentListPage(target);
         } else if (pathname.includes('edit-document')) {
             page = new EditDocumentPage(target);
+        } else if (pathname.includes('new-form')) {
+            page = new NewFormPage(target);
         } else {
             page = new NewDocumentPage(target);
         }
