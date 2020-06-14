@@ -36,11 +36,14 @@ type FieldNode = {
 
 export class FormCreator {
     private id: string;
+    private wrapper: HTMLElement;
     private fieldNodes: FieldNode[] = [];
 
 
     constructor(id?: string, data?: FieldDetails[]) {
         this.id = id;
+
+        this.wrapper = document.createElement('div');
 
         this.fieldNodes = (data || [this.getNewFieldEntry()])
             .map(this.getNodesForEntry);
@@ -61,6 +64,7 @@ export class FormCreator {
         return fields as FieldNode;
     }
 
+    
     getNewFieldEntry = () => {
         return {
             name: '',
@@ -68,6 +72,15 @@ export class FormCreator {
             value: '',
             type: ''
         }
+    }
+
+
+    addNewField = () => {
+        const field = this.getNewFieldEntry();
+        const nodes = this.getNodesForEntry(field);
+
+        this.fieldNodes.push(nodes);
+        this.wrapper.appendChild(this.getEntryNodes(nodes));
     }
 
 
@@ -90,8 +103,7 @@ export class FormCreator {
 
     save() {
         const data = this.getValue();
-        console.log('data', data);
-        // locStorage.saveForm(data, this.id);
+        locStorage.saveForm(data, this.id);
     }
 
     getEntryNodes(fieldEntry: FieldNode) {
@@ -106,15 +118,24 @@ export class FormCreator {
 
     render(node: HTMLElement) {
         node.innerHTML = '';
+
         this.fieldNodes.forEach(fieldEntry => {
-            node.appendChild(this.getEntryNodes(fieldEntry))
+            this.wrapper.appendChild(this.getEntryNodes(fieldEntry))
         });
 
         const submitButton = document.createElement('input');
         submitButton.type = 'submit';
         submitButton.value = 'Wyślij';
         submitButton.onclick = () => this.save();
+
+        const addNewField = document.createElement('input');
+        addNewField.type = 'submit';
+        addNewField.value = 'Dodaj pole';
+        addNewField.onclick = () => this.addNewField();
+
+        node.appendChild(this.wrapper);
         node.appendChild(submitButton);
+        node.appendChild(addNewField);
     }
 }
 
